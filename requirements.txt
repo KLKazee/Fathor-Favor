@@ -2,8 +2,5 @@ librosa
 soundfile
 yt_dlp 
 pydub
-os
 numpy
-io
-sys
 streamlit
