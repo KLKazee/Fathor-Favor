@@ -9,6 +9,9 @@ import sys
 import streamlit as st
 
 
+AudioSegment.converter = r"C:\ffmpeg\bin\ffmpeg.exe"
+AudioSegment.ffprobe = r"C:\ffmpeg\bin\ffprobe.exe"
+
 # Downloads audio from youtube link and saves as mp3
 def download_youtube_audio(url, output_name="output.mp3"):
     # Temporary filename
@@ -123,21 +126,21 @@ if submit:
     else:
         if originalKey == "":
             with st.spinner("Finding and dowloading audio..."):
-                download_youtube_audio(url, title)
+                output_name = download_youtube_audio(url, title)
             with st.spinner("Analyzing key..."):
                 originalKey, corr = define_key(title, mode)
                 st.header("Results")
                 st.success(f"✅ Detected key: {originalKey} (correlation {corr:.3f})")
             with st.spinner("Adjusting the Key..."):
                 steps = findTones(originalKey, newKey)
-                shift_key(title, steps)
+                shift_key(title, steps, output_name)
             
         else:
             with st.spinner("Finding and dowloading audio..."):
-                download_youtube_audio(url, title)
+                output_name =download_youtube_audio(url, title)
             with st.spinner("Adjusting the Key..."):
                 steps = findTones(originalKey, newKey)
-                shift_key(title, steps)
+                shift_key(title, steps, output_name)
                 st.header("Results")
 
 
@@ -145,10 +148,9 @@ if submit:
 
         col1, col2 = st.columns([3,1])
         with col1:
-            st.audio(title + " - Edited.mp3", format="audio/mpeg")
+            st.audio(output_name, format="audio/mpeg")
         with col2:
-            st.download_button("Download MP3", data=open(title, "rb"), file_name=title, mime="audio/mpeg")
+            st.download_button("Download MP3", data=open(output_name, "rb"), file_name=output_name + "-Edited.mp3", mime="audio/mpeg")
 
     
-
 
