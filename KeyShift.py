@@ -8,10 +8,6 @@ import io
 import sys
 import streamlit as st
 
-
-AudioSegment.converter = r"C:\ffmpeg\bin\ffmpeg.exe"
-AudioSegment.ffprobe = r"C:\ffmpeg\bin\ffprobe.exe"
-
 # Downloads audio from youtube link and saves as mp3
 def download_youtube_audio(url, output_name="output.mp3"):
     # Temporary filename
